@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class FirstPersonController : MonoBehaviour
 {
-    public float speed = 5;
-    public float gravity = -10;
+    private CharacterController characterController;
 
+    //Variables related to movement
+    public float speed = 5;
+
+    //Variables related to jumping
+    public float gravity = -10;
     private Vector3 velocity;
 
-    private CharacterController characterController;
+    //Variables related to camera
     private Transform cameraTransform;
+    private float offset = 1.5f;
 
     void Start()
     {
@@ -17,7 +22,7 @@ public class FirstPersonController : MonoBehaviour
 
         //Set camera to first person view
         cameraTransform = Camera.main.transform;
-        cameraTransform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+        cameraTransform.position = new Vector3(transform.position.x, transform.position.y + offset, transform.position.z);
         cameraTransform.parent = transform;
     }
 
