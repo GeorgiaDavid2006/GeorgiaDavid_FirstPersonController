@@ -17,7 +17,7 @@ public class FirstPersonController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         cameraTransform = Camera.main.transform;
-        cameraTransform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        cameraTransform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
         cameraTransform.parent = transform;
     }
 
