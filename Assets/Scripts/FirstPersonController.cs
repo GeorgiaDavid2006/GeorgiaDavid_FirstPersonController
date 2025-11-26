@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class FirstPersonController : MonoBehaviour
         //Jump with Spacebar
         if(Input.GetKeyDown(KeyCode.Space) && characterController.isGrounded)
         {
-
+            
         }
     }
 }
