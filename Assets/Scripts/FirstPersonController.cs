@@ -8,9 +8,9 @@ public class FirstPersonController : MonoBehaviour
     //Variables related to movement
     public float minSpeed = 0;
     public float speed;
-    public float maxSpeed = 5;
+    public float maxSpeed = 10;
     public float acceleration = 5;
-    public float deceleration = 10;
+    public float deceleration = 5;
 
     //Variables related to jumping
     public float jumpForce = 2;
