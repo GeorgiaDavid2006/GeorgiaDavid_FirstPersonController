@@ -661,12 +661,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSpeed: 0
-  speed: 0
+  speed: 5
   maxSpeed: 10
   acceleration: 5
   deceleration: 5
-  jumpForce: 2
-  gravity: -10
+  jumpForce: 5
+  gravity: -5
+  player: {fileID: 934651744}
   mouseSensitivity: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

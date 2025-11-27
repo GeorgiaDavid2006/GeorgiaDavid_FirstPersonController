@@ -13,12 +13,14 @@ public class FirstPersonController : MonoBehaviour
     public float deceleration = 5;
 
     //Variables related to jumping
-    public float jumpForce = 2;
-    public float gravity = -10;
+    public float jumpForce = 5;
+    public float gravity = -5;
+    private float groundPos = 1;
     private Vector3 velocity;
 
     //Variables related to camera
     private Transform cameraTransform;
+    public Transform player;
     private float offset = 1.5f;
     public float mouseSensitivity = 5;
 
@@ -36,7 +38,7 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Move with WASD
+        //Move with WASD or arrow keys
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -59,11 +61,22 @@ public class FirstPersonController : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 
-        //Jump with Spacebar
-        if(Input.GetKeyDown(KeyCode.Space) && characterController.isGrounded)
+        //Check if on ground
+        bool isGrounded = characterController.isGrounded;
+        if (velocity.y <= groundPos)
         {
-            
+            isGrounded = true;
+            velocity.y = groundPos;
         }
         
+        //Jump with Spacebar
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        {
+            velocity.y = jumpForce;
+        }
+
+        //Apply Gravity
+        velocity.y += gravity * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
     }
 }
