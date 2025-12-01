@@ -9,6 +9,7 @@ public class FirstPersonController : MonoBehaviour
     public float minSpeed = 0;
     public float speed;
     public float maxSpeed = 10;
+    public float maxSprint = 20;
     public float acceleration = 5;
     public float deceleration = 5;
 
@@ -27,6 +28,9 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+        //Lock cursor to center
+        Cursor.lockState = CursorLockMode.Locked;
+
         //Get CharacterController component
         characterController = GetComponent<CharacterController>();
 
@@ -55,6 +59,10 @@ public class FirstPersonController : MonoBehaviour
             speed = Mathf.MoveTowards(speed, maxSpeed, acceleration * Time.deltaTime);
             moveDirection = Direction;
         }
+        else if (Input.GetKeyDown(KeyCode.LeftShift) && Direction.magnitude > minSpeed)
+        {
+            speed = Mathf.MoveTowards(speed, maxSprint, acceleration * Time.deltaTime);
+        }
         else
         {
             speed = Mathf.MoveTowards(speed, minSpeed, deceleration * Time.deltaTime);
@@ -81,8 +89,6 @@ public class FirstPersonController : MonoBehaviour
 
         //Apply Gravity
         velocity.y += gravity * Time.deltaTime;
-
-        Debug.Log("Velocity: " + velocity);
 
         characterController.Move(velocity * Time.deltaTime);
     }
