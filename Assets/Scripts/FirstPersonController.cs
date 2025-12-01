@@ -12,6 +12,7 @@ public class FirstPersonController : MonoBehaviour
     public float maxSprint = 20;
     public float acceleration = 5;
     public float deceleration = 5;
+    Vector3 Direction;
 
     //Variables related to jumping
     public float jumpForce = 5f;
@@ -24,6 +25,8 @@ public class FirstPersonController : MonoBehaviour
     private Transform cameraTransform;
     public Transform player;
     private float offset = 1.5f;
+    private float mouseX;
+    private float mouseY;
     public float mouseSensitivity = 5;
 
     void Start()
@@ -47,7 +50,7 @@ public class FirstPersonController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 Direction = new Vector3(horizontal, 0f, vertical).normalized;
+        Direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
 
@@ -56,12 +59,17 @@ public class FirstPersonController : MonoBehaviour
 
         if (Direction.magnitude > minSpeed)
         {
-            speed = Mathf.MoveTowards(speed, maxSpeed, acceleration * Time.deltaTime);
-            moveDirection = Direction;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && Direction.magnitude > minSpeed)
-        {
-            speed = Mathf.MoveTowards(speed, maxSprint, acceleration * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift) && Direction.magnitude > minSpeed)
+            {
+                Sprint();
+                moveDirection = Direction;
+            }
+            else
+            {
+                speed = Mathf.MoveTowards(speed, maxSpeed, acceleration * Time.deltaTime);
+                moveDirection = Direction;
+            }
+                
         }
         else
         {
@@ -69,8 +77,11 @@ public class FirstPersonController : MonoBehaviour
         }
 
         //Move Camera with mouse
-        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        mouseY -= Input.GetAxis("Mouse Y") * -mouseSensitivity;
+
+        cameraTransform.transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
+        transform.localRotation *= Quaternion.Euler(0, mouseX, 0);
 
         //Check if on ground
         bool isGrounded = characterController.isGrounded;
@@ -89,7 +100,11 @@ public class FirstPersonController : MonoBehaviour
 
         //Apply Gravity
         velocity.y += gravity * Time.deltaTime;
-
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    void Sprint()
+    {
+        speed = Mathf.MoveTowards(speed, maxSprint, acceleration * Time.deltaTime);
     }
 }
