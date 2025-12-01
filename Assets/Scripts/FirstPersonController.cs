@@ -13,8 +13,8 @@ public class FirstPersonController : MonoBehaviour
     public float deceleration = 5;
 
     //Variables related to jumping
-    public float jumpForce = 2.5f;
-    public float gravity = -5;
+    public float jumpForce = 5f;
+    public float gravity = -9.81f;
     private float groundPos = 1;
     private float downwardsVelocity = -2;
     private Vector3 velocity = Vector3.zero;
@@ -46,7 +46,9 @@ public class FirstPersonController : MonoBehaviour
         Vector3 Direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
-        characterController.Move(moveDirection * Time.deltaTime);
+
+        velocity.x = moveDirection.x * speed;
+        velocity.z = moveDirection.z * speed;
 
         if (Direction.magnitude > minSpeed)
         {
@@ -82,6 +84,6 @@ public class FirstPersonController : MonoBehaviour
 
         Debug.Log("Velocity: " + velocity);
 
-        characterController.Move(velocity * speed * Time.deltaTime);
+        characterController.Move(velocity * Time.deltaTime);
     }
 }
