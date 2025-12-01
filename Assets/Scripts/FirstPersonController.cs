@@ -13,10 +13,11 @@ public class FirstPersonController : MonoBehaviour
     public float deceleration = 5;
 
     //Variables related to jumping
-    public float jumpForce = 5;
+    public float jumpForce = 2.5f;
     public float gravity = -5;
     private float groundPos = 1;
-    private Vector3 velocity;
+    private float downwardsVelocity = -2;
+    private Vector3 velocity = Vector3.zero;
 
     //Variables related to camera
     private Transform cameraTransform;
@@ -63,20 +64,24 @@ public class FirstPersonController : MonoBehaviour
 
         //Check if on ground
         bool isGrounded = characterController.isGrounded;
-        if (velocity.y <= groundPos)
+
+        if (isGrounded && velocity.y < 0)
         {
-            isGrounded = true;
-            velocity.y = groundPos;
+            velocity.y = downwardsVelocity;
         }
-        
+
         //Jump with Spacebar
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
             velocity.y = jumpForce;
+            Debug.Log("On key press: " + velocity.y);
         }
 
         //Apply Gravity
         velocity.y += gravity * Time.deltaTime;
-        characterController.Move(velocity * Time.deltaTime);
+
+        Debug.Log("Velocity: " + velocity);
+
+        characterController.Move(velocity * speed * Time.deltaTime);
     }
 }
