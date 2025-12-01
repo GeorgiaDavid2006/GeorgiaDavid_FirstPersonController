@@ -13,6 +13,9 @@ public class FirstPersonController : MonoBehaviour
     public float acceleration = 5;
     public float deceleration = 5;
     Vector3 Direction;
+    private float height = 2;
+    private float crouchHeight = 1;
+    private bool isCrouching;
 
     //Variables related to jumping
     public float jumpForce = 5f;
@@ -59,7 +62,7 @@ public class FirstPersonController : MonoBehaviour
 
         if (Direction.magnitude > minSpeed)
         {
-            if (Input.GetKey(KeyCode.LeftShift) && Direction.magnitude > minSpeed)
+            if (Input.GetKey(KeyCode.LeftShift) && Direction.magnitude > minSpeed && !isCrouching)
             {
                 Sprint();
                 moveDirection = Direction;
@@ -76,8 +79,23 @@ public class FirstPersonController : MonoBehaviour
             speed = Mathf.MoveTowards(speed, minSpeed, deceleration * Time.deltaTime);
         }
 
-        //Move Camera with mouse
-        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        //Crouch with Ctrl
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            if (isCrouching)
+            {
+                characterController.height = height;
+                isCrouching = false;
+            }
+            else
+            {
+                characterController.height = crouchHeight;
+                isCrouching = true;
+            }
+        }
+
+            //Move Camera with mouse
+            mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         mouseY -= Input.GetAxis("Mouse Y") * -mouseSensitivity;
 
         cameraTransform.transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
