@@ -31,6 +31,8 @@ public class FirstPersonController : MonoBehaviour
     private float mouseX;
     private float mouseY;
     public float mouseSensitivity = 5;
+    private float cameraYMin = -90;
+    private float cameraYMax = 90;
 
     void Start()
     {
@@ -96,10 +98,14 @@ public class FirstPersonController : MonoBehaviour
 
             //Move Camera with mouse
             mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        mouseY -= Input.GetAxis("Mouse Y") * -mouseSensitivity;
+            mouseY -= Input.GetAxis("Mouse Y") * -mouseSensitivity;
 
-        cameraTransform.transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
-        transform.localRotation *= Quaternion.Euler(0, mouseX, 0);
+            mouseY = Mathf.Clamp(mouseY, cameraYMin, cameraYMax);
+
+           cameraTransform.transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
+           transform.localRotation *= Quaternion.Euler(0, mouseX, 0);
+
+
 
         //Check if on ground
         bool isGrounded = characterController.isGrounded;
